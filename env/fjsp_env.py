@@ -339,7 +339,8 @@ class FJSPEnv(gym.Env):
         self.time = e
 
         # Update partial schedule (state), variables and feature vectors
-        self.machines_batch[d, 0] = 1
+        self.machines_batch[:, :, 0] = torch.where(d, torch.ones_like(self.machines_batch[:, :, 0]),
+                                                    self.machines_batch[:, :, 0])
 
         utiliz = self.machines_batch[:, :, 2]
         cur_time = self.time[:, None].expand_as(utiliz)
