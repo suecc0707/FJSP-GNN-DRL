@@ -91,12 +91,8 @@ def main():
     file_name = [test_files[i] for i in range(num_ins)]
     data_file = pd.DataFrame(file_name, columns=["file_name"])
     data_file.to_excel(writer, sheet_name='Sheet1', index=False)
-    writer.save()
-    writer.close()
 
     data_file.to_excel(writer_time, sheet_name='Sheet1', index=False)
-    writer_time.save()
-    writer_time.close()
 
     # Rule-by-rule (model-by-model) testing
     start = time.time()
@@ -171,16 +167,15 @@ def main():
         data = pd.DataFrame(torch.tensor(makespans).t().tolist(), columns=[rule])
 
         data.to_excel(writer, sheet_name='Sheet1', index=False, startcol=i_rules + 1)
-        writer.save()
-        writer.close()
 
         data = pd.DataFrame(torch.tensor(times).t().tolist(), columns=[rule])
         data.to_excel(writer_time, sheet_name='Sheet1', index=False, startcol=i_rules + 1)
-        writer_time.save()
-        writer_time.close()
 
         for env in envs:
             env.reset()
+
+    writer.close()
+    writer_time.close()
 
     print("total_spend_time: ", time.time() - start)
 
